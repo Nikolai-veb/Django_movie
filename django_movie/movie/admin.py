@@ -62,6 +62,7 @@ class MovieAdmin(admin.ModelAdmin):
     save_as = True
     # Это поле делает указанный атрибут редактируемым
     list_editable = ("draft",)
+    actions = ["publish", "unpublish"]
     #Редактор
     form = MovieAdminForm
     readonly_fields = ("get_image",)
@@ -88,9 +89,39 @@ class MovieAdmin(admin.ModelAdmin):
                 }),
     )
     
-
+      
     def get_image(self, odj):
+        """Функцыя показа изображения"""
         return mark_safe(f'<img src={odj.poster.url} widht="100" height="110"')
+
+
+    def unpublish(self, request, queryset):
+        """Снять с публикации"""
+
+        row_update = queryset.update(draft=True)
+        if row_update == 1:
+            message_bit = " 1 запись была обновлена"
+        else:
+            message_bit = f"{row_update} записей бли обновленны"
+        self.message_user(request,f"{message_bit}")
+    
+
+    def publish(self, request, queryset):
+           """Опубликовать"""
+           row_update = queryset.update(draft=False)
+           if row_update == 1:
+               message_bit = " 1 запись была обновлена"
+           else:
+               message_bit = f"{row_update} записей бли обновленны"
+               self.message_user(request,f"{message_bit}")
+
+
+    publish.short_description = "Опубликовать"
+    publish.allowed_permissions = ('change',)
+
+    unpublish.short_description = "Снять с публикацыи"
+    unpublish.allowed_permissions = ('change',)
+
     get_image.short_description = "Постер"
 
 
