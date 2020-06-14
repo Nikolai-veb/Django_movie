@@ -2,7 +2,28 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 # Register your models here.
-from .models import  Category, Actor, Ganre, Movie, RatingStar, Rating, Reviews, MovieShots 
+from .models import  Category, Actor, Ganre, Movie, RatingStar, Rating, Reviews, MovieShots
+
+from django import forms
+from ckeditor_uploader.widgets  import CKEditorUploadingWidget
+
+""" Редактор """
+class MovieAdminForm(forms.ModelForm):
+    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+
+
+
+
+
+
+
+
+
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -41,6 +62,8 @@ class MovieAdmin(admin.ModelAdmin):
     save_as = True
     # Это поле делает указанный атрибут редактируемым
     list_editable = ("draft",)
+    #Редактор
+    form = MovieAdminForm
     readonly_fields = ("get_image",)
     #fields = (("actors", "directors", "genres"),)
     fieldsets = (

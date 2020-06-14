@@ -22,7 +22,7 @@ class Actor(models.Model):
     """Авторы и Режисеры"""
     name = models.CharField("Имя", max_length=100)
     age = models.PositiveSmallIntegerField("Возрвст", default=0)
-    discription = models.TextField("Описание")
+    description = models.TextField("Описание")
     image = models.ImageField("Изображение", upload_to='actors/')
 
     def __str__(self):
