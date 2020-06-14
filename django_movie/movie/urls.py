@@ -7,4 +7,5 @@ urlpatterns = [
     url(r"^$", views.MoviesView.as_view()),
     url("<slug:slug>", views.MovieDetailView.as_view(), name="movie_detail"),
     url("review/(?P<pk>\d+)$", views.AddReview.as_view(), name="add_review"),
+    path("actor/<str:slug>/", views.ActorView.as_view(), name="actor_detail")
 ]
