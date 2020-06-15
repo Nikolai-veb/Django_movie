@@ -27,6 +27,7 @@ class MovieDetailView(GanreYear, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["start_form"] = RatingForm()
+        context["form"] = ReviewForm()
         return context
 
 
