@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-
-# Register your models here.
 from .models import  Category, Actor, Ganre, Movie, RatingStar, Rating, Reviews, MovieShots
-
 from django import forms
 from ckeditor_uploader.widgets  import CKEditorUploadingWidget
+from modeltranslation.admin import TranslationAdmin
+
 
 """ Редактор """
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+    description_ru = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+    description_en = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
     class Meta:
         model = Movie
         fields = '__all__'
@@ -17,16 +17,8 @@ class MovieAdminForm(forms.ModelForm):
 
 
 
-
-
-
-
-
-
-
-
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslationAdmin):
     list_display = ("id", "name", "url")
     # Указаное имя в данной строке становиться ссылкой
     list_display_links =("name",)
@@ -50,7 +42,7 @@ class MovieShotsInline(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
     # Это строка выводит окно поиска по указанным элементам
@@ -134,11 +126,11 @@ class ReviewsAdmin(admin.ModelAdmin):
     #readonly_fields = ("name", "email")
 
 @admin.register(Ganre)
-class GanreAdmin(admin.ModelAdmin):
+class GanreAdmin(TranslationAdmin):
     list_display = ("name", "url")
 
 @admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
+class ActorAdmin(TranslationAdmin):
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image",)
     # Функыця отоброжения картинок в админке
@@ -152,7 +144,7 @@ class RatingAdmin(admin.ModelAdmin):
     list_display = ("star", "movie", "ip")
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(admin.ModelAdmin):
+class MovieShotsAdmin(TranslationAdmin):
     list_display = ("title", "movie", "get_image")
     readonly_fields = ("get_image",)
 
