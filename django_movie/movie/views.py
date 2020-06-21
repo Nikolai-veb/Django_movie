@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.base import View
+
+from django.db.models import Q, OuterRef, Subquery, Case, When
+from django.http import JsonResponse, HttpResponse
+
 from django.views.generic import ListView, DetailView
 from .models import Movie, Actor, Category, Ganre
 from .forms import ReviewForm, RatingForm
+from django.urls import reverse
 
 
 class GanreYear:
@@ -52,7 +57,7 @@ class ActorView(GanreYear, DetailView):
     """Вывод детальнтй информацыи о актере"""
     model = Actor
     template_name = 'movie/actor.html'
-    slug_fields = "name"
+    slug_field = "name"
 
 
 class FilterMoviesView(GanreYear, ListView):
@@ -68,7 +73,7 @@ class FilterMoviesView(GanreYear, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["year"] = ''.join([f"year={x}&" for x in self.request.GET.getlist("year")])
-        context["genre"] = ''.join([f"genre={x}&" for x in self    .request.GET.getlist("genre")])
+        context["genre"] = ''.join([f"genre={x}&" for x in self.request.GET.getlist("genre")])
         return context
 
 

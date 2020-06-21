@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from django.urls import reverse
 # Create your models here.
 
 
@@ -29,7 +30,7 @@ class Actor(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('actor_detaill', kwargs={"slug" : self.name})
+        return reverse('actor_detail', kwargs={"slug" : self.name})
 
     class Meta:
         verbose_name = "Актеры и режиссеры"

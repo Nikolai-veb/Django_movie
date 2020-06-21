@@ -151,7 +151,7 @@ class MovieShotsAdmin(TranslationAdmin):
 
     # Функыця отоброжения картинок в админке
     def get_image(self, odj):
-        return make_safe(f'<img src={odj.image.url} widht="50" height="60"')
+        return mark_safe(f'<img src={odj.image.url} widht="50" height="60"')
 
     get_image.short_description = "Изображение"
 
