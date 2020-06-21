@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from django.urls import reverse
 # Create your models here.
 
 
@@ -22,11 +23,14 @@ class Actor(models.Model):
     """Авторы и Режисеры"""
     name = models.CharField("Имя", max_length=100)
     age = models.PositiveSmallIntegerField("Возрвст", default=0)
-    discription = models.TextField("Описание")
+    description = models.TextField("Описание")
     image = models.ImageField("Изображение", upload_to='actors/')
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('actor_detail', kwargs={"slug" : self.name})
 
     class Meta:
         verbose_name = "Актеры и режиссеры"
@@ -52,7 +56,7 @@ class Movie(models.Model):
     "Фильм"
     title = models.CharField("Название", max_length=100)
     tagline = models.CharField("Слоган", max_length=100,  default="")
-    discription = models.TextField("Опискние")
+    description = models.TextField("Опискние")
     poster = models.ImageField("Постер", upload_to="movies/")
     year = models.PositiveSmallIntegerField("Дата выхода", default=2019)
     country = models.CharField("Страна", max_length=30)
@@ -70,6 +74,12 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("movie_detail", kwargs={"slug":self.url})
+
+    def get_review(self):
+        return self.reviews_set.filter(parent__isnull=True)
 
     class Meta:
         verbose_name = "Фильм"
@@ -96,11 +106,12 @@ class RatingStar(models.Model):
     value = models.PositiveSmallIntegerField("Значение", default=0)
 
     def __str__(self):
-        return self.value
+        return f'{self.value}'
 
     class Meta:
         verbose_name = "Звезды рейтинга"
         verbose_name_plural = "Звезды рейтинга"
+        ordering = ["-value"]
 
 
 class Rating(models.Model):
