@@ -1,9 +1,5 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
-
-from django.db.models import Q, OuterRef, Subquery, Case, When
-from django.http import JsonResponse, HttpResponse
-
 from django.views.generic import ListView, DetailView
 from .models import Movie, Actor, Category, Ganre
 from .forms import ReviewForm, RatingForm
@@ -57,7 +53,7 @@ class ActorView(GanreYear, DetailView):
     """Вывод детальнтй информацыи о актере"""
     model = Actor
     template_name = 'movie/actor.html'
-    slug_field = "name"
+    slug_fields = "name"
 
 
 class FilterMoviesView(GanreYear, ListView):

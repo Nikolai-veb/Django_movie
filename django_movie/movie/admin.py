@@ -22,6 +22,7 @@ class CategoryAdmin(TranslationAdmin):
     list_display = ("id", "name", "url")
     # Указаное имя в данной строке становиться ссылкой
     list_display_links =("name",)
+    prepopulated_fields = {"url":("name",)}
 
 
 
@@ -34,7 +35,7 @@ class MovieShotsInline(admin.TabularInline):
     model = MovieShots
     extra = 1
     readonly_fields = ("get_image",)
-    
+
     # Функыця отоброжения картинок в админке
     def get_image(self, odj):
         return mark_safe(f'<img src={odj.image.url} widht="50" height="60"')
@@ -45,6 +46,7 @@ class MovieShotsInline(admin.TabularInline):
 class MovieAdmin(TranslationAdmin):
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
+    prepopulated_fields = {"url":("title",)}
     # Это строка выводит окно поиска по указанным элементам
     search_fields = ("title", "category__name")
     inlines = [MovieShotsInline, ReviewInline]
@@ -80,8 +82,8 @@ class MovieAdmin(TranslationAdmin):
                 "fields":(("url", "draft"),)
                 }),
     )
-    
-      
+
+
     def get_image(self, odj):
         """Функцыя показа изображения"""
         return mark_safe(f'<img src={odj.poster.url} widht="100" height="110"')
@@ -96,7 +98,7 @@ class MovieAdmin(TranslationAdmin):
         else:
             message_bit = f"{row_update} записей бли обновленны"
         self.message_user(request,f"{message_bit}")
-    
+
 
     def publish(self, request, queryset):
            """Опубликовать"""
@@ -122,12 +124,13 @@ class MovieAdmin(TranslationAdmin):
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "parent", "movie",)
-    #Это поле запрещает редактирование данных полей 
+    #Это поле запрещает редактирование данных полей
     #readonly_fields = ("name", "email")
 
 @admin.register(Ganre)
 class GanreAdmin(TranslationAdmin):
     list_display = ("name", "url")
+    prepopulated_fields = {"url":("name",)}
 
 @admin.register(Actor)
 class ActorAdmin(TranslationAdmin):
