@@ -1,15 +1,12 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import  Category, Actor, Ganre, Movie, RatingStar, Rating, Reviews, MovieShots
-from django import forms
+from .models import  Category, Actor, Ganre, Movie, RatingStar, Rating, Review, MovieShots
 from ckeditor_uploader.widgets  import CKEditorUploadingWidget
-from modeltranslation.admin import TranslationAdmin
-
+from django import forms
 
 """ Редактор """
 class MovieAdminForm(forms.ModelForm):
-    description_ru = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
-    description_en = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
     class Meta:
         model = Movie
         fields = '__all__'
@@ -18,7 +15,7 @@ class MovieAdminForm(forms.ModelForm):
 
 
 @admin.register(Category)
-class CategoryAdmin(TranslationAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "slug")
     # Указаное имя в данной строке становиться ссылкой
     list_display_links =("name",)
@@ -27,7 +24,7 @@ class CategoryAdmin(TranslationAdmin):
 
 
 class ReviewInline(admin.TabularInline):
-    model = Reviews
+    model = Review
     extra = 1
 
 
@@ -43,7 +40,7 @@ class MovieShotsInline(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(TranslationAdmin):
+class MovieAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
     prepopulated_fields = {"url":("title",)}
@@ -121,19 +118,19 @@ class MovieAdmin(TranslationAdmin):
 
 
 
-@admin.register(Reviews)
-class ReviewsAdmin(admin.ModelAdmin):
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "parent", "movie",)
     #Это поле запрещает редактирование данных полей
     #readonly_fields = ("name", "email")
 
 @admin.register(Ganre)
-class GanreAdmin(TranslationAdmin):
+class GanreAdmin(admin.ModelAdmin):
     list_display = ("name", "url")
     prepopulated_fields = {"url":("name",)}
 
 @admin.register(Actor)
-class ActorAdmin(TranslationAdmin):
+class ActorAdmin(admin.ModelAdmin):
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image",)
     # Функыця отоброжения картинок в админке
@@ -147,7 +144,7 @@ class RatingAdmin(admin.ModelAdmin):
     list_display = ("star", "movie", "ip")
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(TranslationAdmin):
+class MovieShotsAdmin(admin.ModelAdmin):
     list_display = ("title", "movie", "get_image")
     readonly_fields = ("get_image",)
 

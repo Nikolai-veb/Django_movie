@@ -132,7 +132,7 @@ class Rating(models.Model):
 
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     """Отзовы"""
     email = models.EmailField()
     name = models.CharField("Имя", max_length=100)
