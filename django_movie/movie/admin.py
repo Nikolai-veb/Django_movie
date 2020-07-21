@@ -19,7 +19,7 @@ class MovieAdminForm(forms.ModelForm):
 
 @admin.register(Category)
 class CategoryAdmin(TranslationAdmin):
-    list_display = ("id", "name", "url")
+    list_display = ("id", "name", "slug")
     # Указаное имя в данной строке становиться ссылкой
     list_display_links =("name",)
     prepopulated_fields = {"url":("name",)}

@@ -8,7 +8,7 @@ class Category(models.Model):
     """Категории"""
     name = models.CharField("Категории", max_length=150)
     discription = models.TextField("Описание")
-    url = models.SlugField(max_length=160)
+    slug = models.SlugField(max_length=160)
 
     def __str__(self):
         return self.name
@@ -46,6 +46,9 @@ class Ganre(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('ganre_detail', kwargs={"slug" : self.name})
 
     class Meta:
         verbose_name = "Жанр"

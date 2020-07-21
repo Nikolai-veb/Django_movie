@@ -6,6 +6,8 @@ from .forms import ReviewForm, RatingForm
 from django.urls import reverse
 
 
+
+
 class GanreYear:
     """Жанры и года выхода Фильмов"""
     def get_genres(self):
@@ -13,6 +15,7 @@ class GanreYear:
 
     def get_years(self):
         return Movie.objects.filter(draft=False).values("year")
+
 
 
 class MoviesView(GanreYear, ListView):
@@ -123,3 +126,5 @@ class Search(ListView):
         context = super().get_context_data(*args, **kwargs)
         context["q"] = f'q={self.request.GET.get("q")}&'
         return context
+
+
